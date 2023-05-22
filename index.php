@@ -25,34 +25,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if ($errors['name']) {
         setcookie('name_error', '', 100000);
         $messages[] = '<div class="error">Заполните name.</div>';
-      }
-      if ($errors['email']) {
-        setcookie('email_error', '', 100000);
-        $messages[] = '<div class="error">Заполните email.</div>';
-      }
-      if ($errors['year']) {
-        setcookie('year_error', '', 100000);
-        $messages[] = '<div class="error">Заполните year.</div>';
-      }
-      if ($errors['gender']) {
-        setcookie('gender_error', '', 100000);
-        $messages[] = '<div class="error">Заполните gender.</div>';
-      }
-      if ($errors['limbs']) {
-        setcookie('limbs_error', '', 100000);
-        $messages[] = '<div class="error">Заполните limbs.</div>';
-      }
-      if ($errors['abilities']) {
-        setcookie('abilities_error', '', 100000);
-        $messages[] = '<div class="error">Заполните abilities.</div>';
-      }  
-      if ($errors['bio']) {
-        setcookie('bio_error', '', 100000);
-        $messages[] = '<div class="error">Заполните bio.</div>';
-      }
+    }
+    if ($errors['email']) {
+      setcookie('email_error', '', 100000);
+      $messages[] = '<div class="error">Заполните email.</div>';
+    }
+    if ($errors['year']) {
+      setcookie('year_error', '', 100000);
+      $messages[] = '<div class="error">Заполните year.</div>';
+    }
+    if ($errors['gender']) {
+      setcookie('gender_error', '', 100000);
+      $messages[] = '<div class="error">Заполните gender.</div>';
+    }
+    if ($errors['limbs']) {
+      setcookie('limbs_error', '', 100000);
+      $messages[] = '<div class="error">Заполните limbs.</div>';
+    }
+    if ($errors['abilities']) {
+      setcookie('abilities_error', '', 100000);
+      $messages[] = '<div class="error">Заполните abilities.</div>';
+    }  
+    if ($errors['bio']) {
+      setcookie('bio_error', '', 100000);
+      $messages[] = '<div class="error">Заполните bio.</div>';
+    }
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+    $_SESSION['login'] = $validUser;
     include('dbshow.php');
     exit();
 } else {
+  if (!empty($_POST['token']) && hash_equals($_POST['token'], $_SESSION['token'])) {
     foreach ($_POST as $key => $value) {
         if (preg_match('/^clear(\d+)$/', $key, $matches)) {
             $p_id = $matches[1];
@@ -151,5 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
     }
     header('Location: index.php');
+  } else {
+    die('Ошибка CSRF: недопустимый токен');
+  }
 }
-
