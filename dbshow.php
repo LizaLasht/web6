@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-    <title>Задание 6</title>
+    <title>Task 6</title>
     <link rel="stylesheet" href="db.css">
 </head>
 <body>
@@ -17,18 +17,18 @@
             }
         }
     echo '</div>';
-    // $stmt = $db->prepare("SELECT count(application_id) from abilities where superpower_id = 1;");
-    // $stmt->execute();
-    // $god = $stmt->fetchColumn();
-    // $stmt = $db->prepare("SELECT count(application_id) from abilities where superpower_id = 2;");
-    // $stmt->execute();
-    // $steni = $stmt->fetchColumn();
-    // $stmt = $db->prepare("SELECT count(application_id) from abilities where superpower_id = 3;");
-    // $stmt->execute();
-    // $levit = $stmt->fetchColumn();
-    // echo "бессмертие: "; echo (empty($god) ? '0' : $god) . "</br>";
-    // echo "прохождение сквозь стены: "; echo (empty($steni) ? '0' : $steni) . "</br>";
-    // echo "левитация: "; echo (empty($levit) ? '0' : $levit) . "</br>";
+    $stmt = $db->prepare("SELECT count(application_id) from abilities where superpower_id = 1;");
+    $stmt->execute();
+    $god = $stmt->fetchColumn();
+    $stmt = $db->prepare("SELECT count(application_id) from abilities where superpower_id = 2;");
+    $stmt->execute();
+    $steni = $stmt->fetchColumn();
+    $stmt = $db->prepare("SELECT count(application_id) from abilities where superpower_id = 3;");
+    $stmt->execute();
+    $levit = $stmt->fetchColumn();
+    echo "бессмертие: "; echo (empty($god) ? '0' : $god) . "</br>";
+    echo "прохождение сквозь стены: "; echo (empty($steni) ? '0' : $steni) . "</br>";
+    echo "левитация: "; echo (empty($levit) ? '0' : $levit) . "</br>";
 ?>
     <form action="" method="POST">
         <table>
@@ -48,10 +48,10 @@
                     echo    '<tr>
                             <td style="font-weight: 700;">'; print($value['p_id']); echo '</td>
                             <td>
-                                <input class="input" name="name'.$value['p_id'].'" value="'; print($value['name']); echo '">
+                                <input class="input" name="name'.$value['p_id'].'" value="'; print(htmlspecialchars($value['name'])); echo '">
                             </td>
                             <td>
-                                <input class="input" name="email'.$value['p_id'].'" value="'; print($value['email']); echo '">
+                                <input class="input" name="email'.$value['p_id'].'" value="'; print(htmlspecialchars($value['email'])); echo '">
                             </td>
                             <td>
                                 <select name="year'.$value['p_id'].'">';
@@ -106,7 +106,7 @@
                                 </div>
                             </td>
                             <td>
-                                <textarea name="bio'.$value['p_id'].'" id="" cols="30" rows="4" maxlength="128">'; print $value['bio']; echo '</textarea>
+                                <textarea name="bio'.$value['p_id'].'" id="" cols="30" rows="4" maxlength="128">'; print htmlspecialchars($value['bio']); echo '</textarea>
                             </td>
                             <td>
                                 <div class="column-item">
@@ -120,6 +120,7 @@
                 }
             ?>
         </table>
+        <?php if (!empty($_SESSION['login'])) {echo '<input type="hidden" name="token" value="' . $_SESSION["token"] . '">'; } ?>
     </form>
 </body>
 </html>
